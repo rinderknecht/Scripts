@@ -1,0 +1,16 @@
+#!/usr/bin/perl -w
+
+use Encode;
+
+my $in=$ARGV[0];
+my $out=$ARGV[1];
+
+open(UTF8,$in) || die "Cannot open file: $!";
+open(LATIN1,"> $out");
+
+while (<UTF8>) {
+    print LATIN1 encode("iso-8859-1",decode("UTF-8",$_));
+}
+
+close UTF8;
+close LATIN1;

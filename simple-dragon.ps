@@ -1,0 +1,35 @@
+%!PS
+
+/order 15 def
+
+/START { X } def
+/X {
+  dup 0 ne
+  {1 sub 4 {dup} repeat - F X + + F Y -}
+  if pop
+} def
+
+/Y {
+  dup 0 ne
+  {1 sub 4 {dup} repeat + F X - - F Y +}
+  if pop
+} def
+
+/F {
+  0 eq { 10 0 rlineto } if 
+} bind def
+
+/- { -45 rotate } bind def
+
+/+ { 45 rotate } bind def
+
+1 setlinejoin
+1 setlinecap
+
+newpath
+220 180 moveto
+50 order { 2 sqrt div } repeat dup scale
+90 rotate
+order START
+stroke
+
