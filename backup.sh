@@ -12,11 +12,11 @@
 
 #set -x
 
-SVN="CV LaTeX Lectures Makefiles Research bin devel pub"
+SVN="Lectures Makefiles Research bin devel pub"
 LINK="tools Official"
 #MAIN="${SVN} ${LINK} Config WebPub bib man misc Library/Thunderbird/Profiles/56rgu1dz.default"
-MAIN="${SVN} ${LINK} Config WebPub Desktop SVN.dump bib man misc .thunderbird"
-CONF=".bashrc .bash_profile .bash_logout .emacs .profile .unison .my_dircolors .xmodmap_apple .signature_home .emacs_modes .ssh dorongnyong_ssh git"
+MAIN="${SVN} ${LINK} Desktop SVN.dump bib .thunderbird git/ASN.1 git/Book git/Caml_light-build git/Csharp_lexer git/Csharp_preprocessor git/CV git/LaTeX-build git/Mini-ML git/Music git/OCaml-build git/PhD git/Poetry git/Red-Black_Trees git/Scripts git/Singapore git/Ternary_Search_Trees git/UnionFind"
+CONF=".bashrc .bash_profile .bash_logout .emacs .profile .my_dircolors .xmodmap_apple .emacs_modes .ssh"
 #ALL="SVN ${MAIN} ${CONF}"
 ALL="${MAIN} ${CONF}"
 
@@ -38,7 +38,7 @@ rsync --recursive --copy-links --times \
 --delete --delete-excluded --exclude=Lectures/ --exclude=Mirror/ \
 public_html $new_snapshot
 echo " done."
-for path in LaTeX bin devel tools public_html/Software; do
+for path in bin devel tools; do
   $scripts/symlinks.sh --set --recursive $path
 done
 $scripts/symlinks.sh --set public_html
