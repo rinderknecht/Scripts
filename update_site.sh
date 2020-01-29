@@ -28,7 +28,7 @@ fatal_error () {
 
 warn () {
  print_nl "\n$script: warning:"
- print_nl "$1" 
+ print_nl "$1"
 }
 
 #=====================================================================
@@ -40,7 +40,7 @@ Usage: $(basename $0) [-h][-d]
 
 Update the web site on the local host.
 
-The following options, if given, must be given only once. 
+The following options, if given, must be given only once.
 
 Display control:
   -h, --help       display this help and exit
@@ -59,7 +59,7 @@ while : ; do
     "") break;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
@@ -105,7 +105,7 @@ record_update () {
   updates=$2
   exports=$3
   updated_exports=$4
- 
+
 #   echo "Entering record_update..."
 #   echo "\$updated=[$1]"
 #   echo "\$updates=[$2]"
@@ -121,7 +121,7 @@ record_update () {
     then update_dir=$(dirname $update)
     else update_dir=
     fi
-    if test -n "$update_dir" 
+    if test -n "$update_dir"
     then if test $(basename $update) = $exports
          then echo $update_dir >> $updated_exports
          elif ! (grep -x $update_dir $updates > /dev/null 2>&1)
@@ -232,7 +232,7 @@ update_doc () {
                     (cd $qualified_path
                      setup.sh
                      if test -f Makefile
-                     then 
+                     then
                        doc=$(make -Rrs doc 2>/dev/null)
                        if test -n "$doc"
                        then
@@ -433,7 +433,7 @@ update_root_idx () {
     echo "  <h3>by Christian Rinderknecht</h3>" >> $index
     echo >> $index
     echo "  <ul>" >> $index
-      
+
       sed '/^[ ]*$/d' $catalog \
     | while read lecture; do
         if test -s $lecture/$exports
@@ -526,7 +526,7 @@ prefix_free () {
 distribute () {
   mirrors=../$1
   paths=$2
-  
+
   rm -f $2.dist
 
     cat $2 \
@@ -559,7 +559,7 @@ update_mirror () {
   updated_exports=$9
 
   rm -f $exported_dirs $exported_dirs.dist $mirrored_dirs .removed
- 
+
   # updated_lectures <- $cat_path $updated_exports $exported_updates
 
 #   echo "Entering update_mirror..."
@@ -620,7 +620,7 @@ update_mirror () {
      done
      sort -o $exported_dirs -u $exported_dirs
      distribute $mirror $exported_dirs
- 
+
     # Collecting all the current directories in the mirror and removing
     # all the names which are prefix of another.
     #
@@ -667,7 +667,7 @@ update_mirror () {
            fi
          done
     else rm -f .added
-    fi  
+    fi
 
   fi
 }

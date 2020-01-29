@@ -2,7 +2,7 @@
 
 # This script creates incremental and rotating backups using the
 # method described by Mike Rubel at
-# http://www.mikerubel.org/computers/rsync_snapshots/ 
+# http://www.mikerubel.org/computers/rsync_snapshots/
 
 # $Id: snapshot.sh 8433 2016-08-15 09:31:23Z rinderkn $
 
@@ -31,7 +31,7 @@ fatal_error () {
 
 warn () {
  print_nl "$script: warning:"
- print_nl "$1" 
+ print_nl "$1"
 }
 
 debug_nl () { test "$debug" = "yes" && echo "$1"; }
@@ -63,7 +63,7 @@ while : ; do
       long_short_opt=$1
       break
       ;;
-      # The directory where snapshots should be stored. 
+      # The directory where snapshots should be stored.
       #
     -p)
       if test -n "$prefix_opt"
@@ -120,7 +120,7 @@ while : ; do
       shift
       up_to_opt="-u"
       ;;
-    --up-to=*) 
+    --up-to=*)
       if test -n "$up_to_opt"
       then fatal_error "Repeated option --up-to."
       fi
@@ -136,7 +136,7 @@ while : ; do
       # must be removed. In case of directories, add a trailing /
       # after the name.
       #
-    -x) 
+    -x)
       if test -n "$exclude_opt"
       then fatal_error "Repeated option -x."
       fi
@@ -165,7 +165,7 @@ while : ; do
       debug_opt=$1
       ;;
       # A toggle which causes this script to say what it would do,
-      # without doing it. 
+      # without doing it.
       #
     -n | --just-print)
       if test -n "$just_print_opt"
@@ -176,13 +176,13 @@ while : ; do
       ;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
       # Version
       #
-    -v | --version | -version) 
+    -v | --version | -version)
       version=yes
       version_opt=$1
       ;;
@@ -200,7 +200,7 @@ while : ; do
       # Invalid argument
       #
      *)
-      fatal_error "Invalid argument \"$1\"." 
+      fatal_error "Invalid argument \"$1\"."
   esac
   shift
 done
@@ -214,9 +214,9 @@ Usage: $(basename $0) [-hvnqd][-x <paths>][-u <num>]
                       -m <paths> -p <path> -f <filename>
 Creates incremental and rotating backups using rsync.
 Method by Mike Rubel described at
-http://www.mikerubel.org/computers/rsync_snapshots/ 
+http://www.mikerubel.org/computers/rsync_snapshots/
 
-The following options, if given, must be given only once. 
+The following options, if given, must be given only once.
 
 Display control:
   -h, --help           display this help and exit
@@ -230,20 +230,20 @@ Mandatory options:
                        (directories with no trailing slash)
   -p, --prefix=DIR     directory where to put the snapshot
                        (without trailing slash)
-  -f, --filename=NAME  name of the snapshot 
+  -f, --filename=NAME  name of the snapshot
                        (without dot and extension)
-                       
+
   The most recent snapshot of PATHS is DIR/NAME.00
   DIR and PATHS must be disjoint trees.
 
 Additional options:
   -x, --exclude=PATHS  directories and files to be excluded
-                       from the snapshot (directories with 
-                       trailing slash) of a unique master 
+                       from the snapshot (directories with
+                       trailing slash) of a unique master
                        directory (see --masters); paths are
                        relative to the master directory
-                      
-  -u, --up-to=NUM      maximum number of snapshots, lower 
+
+  -u, --up-to=NUM      maximum number of snapshots, lower
                        than 100; default is 31; overflowing
                        snapshots are deleted
 EOF
@@ -298,7 +298,7 @@ done
 debug_nl "masters directories and files.... $masters"
 debug_nl "masters directories.............. $master_dirs"
 
-# A prefix path for the snapshots 
+# A prefix path for the snapshots
 #  1) is mandatory,
 #  2) must refer to an existing directory,
 #  3) must not be terminated by a slash.
@@ -334,7 +334,7 @@ then
   if test -z "$numeric"
   then fatal_error "Non numeric argument ($up_to) to option $up_to_opt."
   fi
-  if test $up_to -lt 0 
+  if test $up_to -lt 0
   then fatal_error "Negative number of snapshots (check $up_to_opt)."
   fi
   if test $up_to -eq 0
@@ -377,7 +377,7 @@ then
     if test ! -e $master_dirs/$excluded
     then warn "Excluded path \"$master_dirs/$excluded\" is missing (check $exclude_opt)."
     fi
-  done  
+  done
 
   # Check for missing trailing slashes on existing excluded
   # directories (they indeed must be followed by a slash).
@@ -390,7 +390,7 @@ then
   done
 
   debug_nl "excluded directories and files... $exclude"
-                        
+
   # Building the options for [rsync]
   #
   for excluded in $exclude; do
@@ -429,7 +429,7 @@ snapshot_err () {
 command () {
   if test "$just_print" = "yes"
   then print_nl "$1"
-  else if test -n "$2" 
+  else if test -n "$2"
        then print "$2... "
        fi
        err_msg=$(eval "$1" > /dev/null 2>&1)

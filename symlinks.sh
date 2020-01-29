@@ -31,7 +31,7 @@ fatal_error () {
 
 warn () {
  print_nl "$script: warning:"
- print_nl "$1" 
+ print_nl "$1"
 }
 
 verb () { if test -n "$verbose_opt"; then printf "$1"; fi }
@@ -46,23 +46,23 @@ usage () {
 Usage: $(basename $0) -s [-h][-q | -v][-d][-r][<path>]
        $(basename $0) -u [-h][-q | -v][-d][-r][<path>]
 
-Set up or unset the symbolic links in file \`<path>/.links', of 
+Set up or unset the symbolic links in file \`<path>/.links', of
 which lines are either of the form <destination path> <source filename>,
-interpreted as a symbolic link from <source filename> to 
+interpreted as a symbolic link from <source filename> to
 <destination path>, or #include "<file>", where <file> is a file
 specifying symbolic links as <destination path> <source filename> on
 each line.
 
-The <source filename> can be omitted, in which case the name of 
-the link will be the basename of <destination path> (following 
-\`ln' convention). In case <source filename> is specified, it 
-should be syntactically a file name, so the link is created in 
+The <source filename> can be omitted, in which case the name of
+the link will be the basename of <destination path> (following
+\`ln' convention). In case <source filename> is specified, it
+should be syntactically a file name, so the link is created in
 the directory <path>, otherwise a warning would be issued.
 
-If \`<path>/.links' is not found, a warning is issued and nothing 
+If \`<path>/.links' is not found, a warning is issued and nothing
 is done. If <path> is omitted, it is defaulted to \`.'
 
-The following options, if given, must be given only once. 
+The following options, if given, must be given only once.
 
 Display control:
   -h, --help       display this help and exit
@@ -88,7 +88,7 @@ while : ; do
     "") break;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
@@ -143,7 +143,7 @@ while : ; do
      *)
       if test -n "$path_arg"
       then fatal_error "Only one path allowed."
-      fi  
+      fi
       path=yes
       path_arg=$1
       ;;
@@ -195,7 +195,7 @@ apply () {
            if test -n "$src"
            then if test "$src" != "$(basename $src)"
                 then warn "Link name $src (source) is not a filename."
-                fi 
+                fi
            fi
            dest=$(eval echo $static_dest)
            if test -n "$dest"

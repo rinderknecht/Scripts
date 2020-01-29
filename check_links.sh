@@ -25,7 +25,7 @@ Usage: $(basename $0) [-h][-d][-r][<path>]
 
 Check the validity of symbolic links in <path>.
 
-The following options, if given, must be given only once. 
+The following options, if given, must be given only once.
 
 Display control:
   -h, --help       display this help and exit
@@ -45,7 +45,7 @@ while : ; do
     "") break;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
@@ -72,7 +72,7 @@ while : ; do
      *)
       if test -n "$path_arg"
       then fatal_error "Only one path allowed."
-      fi  
+      fi
       path=yes
       path_arg=$1
       ;;

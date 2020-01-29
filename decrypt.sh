@@ -11,9 +11,8 @@
 # General Settings
 
 # In a future release, $quiet could be passed as an option
-#
-quiet=no
 
+quiet=no
 script=$(basename $0)
 
 # =====================================================================
@@ -31,7 +30,7 @@ fatal_error () {
 
 warn () {
  print_nl "$script: warning:"
- print_nl "$1" 
+ print_nl "$1"
 }
 
 debug_nl () { test "$debug" = "yes" && echo "$1"; }
@@ -44,7 +43,7 @@ while : ; do
     "") break;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
@@ -411,7 +410,7 @@ errors_in_blg () {
              done
          fi
        fi;;
-  esac        
+  esac
 }
 
 # =====================================================================
@@ -609,7 +608,7 @@ slide_overfull () {
   linenum_in_log=$(echo "$line" \
                    | sed -n 's|^\(.*\):LaTeX Warning:.*|\1|p')
   line_in_log=$(sed -n "$linenum_in_log p" ${1}.log)
-  page=$(echo "$line_in_log" | sed -n 's|.*Slide \([0-9]\+\).*|\1|p')  
+  page=$(echo "$line_in_log" | sed -n 's|.*Slide \([0-9]\+\).*|\1|p')
   points=$(echo "$line_in_log" | sed -n 's|.* by \(.*pt\) .*|\1|p')
   SET_FILE ${1}.log $linenum_in_log
   if test -z "$FILE"
