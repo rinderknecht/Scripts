@@ -13,7 +13,7 @@
 #set -x
 
 SVN="Lectures Makefiles Research bin pub"
-LINK="tools Official TBN"
+LINK="tools Official LigoLANG"
 #MAIN="${SVN} ${LINK} Config WebPub bib man misc Library/Thunderbird/Profiles/56rgu1dz.default"
 MAIN="${SVN} ${LINK} Desktop SVN.dump bib misc .thunderbird git/ligo/src git/ASN.1 git/Book git/Caml_light-build git/Csharp_lexer git/Csharp_preprocessor git/CV git/LaTeX-build git/Mini-ML git/Music git/OCaml-build git/PhD git/Poetry git/Red-Black_Trees git/Scripts git/Singapore git/Ternary_Search_Trees git/UnionFind academia.html"
 CONF=".bashrc .bash_profile .bash_logout .emacs .profile .my_dircolors .xmodmap_apple .emacs_modes .ssh"
