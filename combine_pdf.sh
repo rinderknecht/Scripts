@@ -1,3 +1,7 @@
 #!/bin/sh
 
-gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=$1.pdf -dBATCH "${@:2}"
+# set -x
+
+target="$1"
+shift
+gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=$target -dBATCH "$@"
