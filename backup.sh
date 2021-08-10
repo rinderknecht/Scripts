@@ -16,7 +16,7 @@ SVN="Lectures Makefiles Research bin pub"
 LINK="tools Official LIGO_lang"
 #MAIN="${SVN} ${LINK} Config WebPub bib man misc Library/Thunderbird/Profiles/56rgu1dz.default"
 MAIN="${SVN} ${LINK} Desktop SVN.dump bib misc .thunderbird git/ligo git/ASN.1 git/Book git/Caml_light-build git/Csharp_lexer git/Csharp_preprocessor git/CV git/LaTeX-build git/Mini-ML git/Music git/OCaml-build git/PhD git/Poetry git/RedBlackTrees git/SourceLoc git/TextEdit git/Scripts git/Singapore git/Dictionary git/UnionFind academia.html"
-CONF=".bashrc .bash_profile .bash_logout .emacs .profile .my_dircolors .xmodmap_apple .emacs_modes .ssh"
+CONF=".bashrc .bash_profile .bash_logout .emacs .profile .my_dircolors .xmodmap_apple .emacs_modes .ssh gitlab-recovery-codes.txt"
 #ALL="SVN ${MAIN} ${CONF}"
 ALL="${MAIN} ${CONF}"
 
