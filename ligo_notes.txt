@@ -1,0 +1,20 @@
+Add at the end of ~/config/coq/coqiderc:
+
+modifier_for_navigation = "<Control>"
+modifiers_valid = "<Control><Shift><Alt><Super>"
+
+For setting up the repository:
+
+git clone git@gitlab.com:ligolang/ligo
+opam switch create ligo-switch 4.06.1
+eval $(opam env --switch=ligo-switch --set-switch)
+opam install merlin ocp-indent user-setup
+opam user-setup install
+
+cd ligo
+./vendors/opam-repository-tools/rewrite-local-opam-repository.sh
+opam repository add localrepo "file://$PWD/vendors/ligo-opam-repository-local-generated/"
+opam install -y --build-test --deps-only ./src/
+dune build -p ligo
+dune build @ligo-test
+opam reinstall ligo
