@@ -37,7 +37,7 @@ while : ; do
     "") break;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
@@ -69,7 +69,7 @@ usage () {
 Usage: $(basename $0) [-h][-d] <symlink>
 Check the validity of symbolic link <symlink>.
 
-The following options, if given, must be given only once. 
+The following options, if given, must be given only once.
 
 Display control:
   -h, --help       display this help and exit
