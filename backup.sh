@@ -12,7 +12,7 @@
 
 #set -x
 
-SVN="Lectures Research bin pub git"
+SVN="Research bin pub git"
 LINK="tools Official LIGO_lang"
 #MAIN="${SVN} ${LINK} Config WebPub bib man misc Library/Thunderbird/Profiles/56rgu1dz.default"
 MAIN="${SVN} ${LINK} Desktop SVN.dump bib misc .thunderbird"

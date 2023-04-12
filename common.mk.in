@@ -1,0 +1,23 @@
+#-*-makefile-*-
+
+ECHO    := @ECHO@
+RM      := @RM@
+
+A2PS    := @A2PS@
+PS2PDF  := @PS2PDF@
+GS      := @GS@
+
+SCRIPTS := check_link.sh check_links.sh symlinks.sh \
+           setup.sh clean.sh \
+           update_site.sh rsync_site.sh
+
+PDF     := ${SCRIPTS:%=%.pdf}
+
+include precom.mk
+
+ifneq (${MAKECMDGOALS},clean)
+  ifneq (${MAKECMDGOALS},distclean)
+    sinclude bash2ps.mk Makefile2ps.mk a2ps.mk # a2ps.mk last
+    sinclude ps2pdf.mk gs.mk
+  endif
+endif
