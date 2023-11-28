@@ -12,31 +12,26 @@
 
 #set -x
 
-SVN="Research bin pub git"
-LINK="tools Official LIGO_lang"
-#MAIN="${SVN} ${LINK} Config WebPub bib man misc Library/Thunderbird/Profiles/56rgu1dz.default"
-MAIN="${SVN} ${LINK} Desktop SVN.dump bib misc .thunderbird"
-CONF=".bashrc .bash_profile .bash_logout .emacs .profile .my_dircolors .xmodmap_apple .emacs_modes .ssh gitlab-recovery-codes.txt"
-#ALL="SVN ${MAIN} ${CONF}"
+CODE="Research bin pub git tools LaTeX Personnel Makefiles public_html"
+DOCS="Official LIGO_lang Pictures Turnstiles"
+MAIN="${CODE} ${DOCS} Desktop SVN.dump bib misc .thunderbird .opam .nvm"
+CONF=".aspell.en.prepl .aspell.en.pws .bash_history .bash_logout .bash_profile .bashrc .emacs .emacs_modes .gitconfig .profile .my_dircolors .XCompose .Xdefaults .xdvirc .xinputrc .xsession .Xsession .config .xmodmap_apple .ssh .dbus .dmrc gitlab-recovery-codes.txt"
 ALL="${MAIN} ${CONF}"
 
 #prefix=/Volumes/Backup
 prefix=/media/rinderkn/Backup
 base=snapshot
 new_snapshot="${prefix}/${base}.00"
-#scripts=/Volumes/Users/rinderkn/devel/Scripts
 scripts=/home/rinderkn/git/Scripts
 
 (cd ~
-#$scripts/clean.sh --recursive ${SVN} ${LINK} public_html/CV public_html/Software
-#$scripts/clean.sh public_html
 $scripts/snapshot.sh -m "${ALL}" -p $prefix -f $base -u 99
 printf "synchronising $new_snapshot with public_html..."
 # Removed --perms --group --owner for exFAT
-rsync --recursive --copy-links --times \
---exclude=.svn --ignore-errors \
---delete --delete-excluded --exclude=Lectures/ \
-public_html $new_snapshot
+# rsync --recursive --copy-links --times \
+# --exclude=.svn --ignore-errors \
+# --delete --delete-excluded --exclude=Lectures/ \
+# public_html $new_snapshot
 echo " done."
 #for path in bin tools; do
 #  $scripts/symlinks.sh --set --recursive $path
