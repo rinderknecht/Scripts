@@ -1,0 +1,6 @@
+*.elc
+*~
+*.tar.gz
+/tuareg.*/
+/opam/url
+ChangeLog
