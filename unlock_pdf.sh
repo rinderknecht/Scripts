@@ -7,4 +7,4 @@ then
   exit 1
 fi
 
-gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -SPDFPassword=$1 -sOutputFile=$3 -c .setpdfwrite -f $2
+gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -SPDFPassword=$1 -sOutputFile=$3 -f $2
