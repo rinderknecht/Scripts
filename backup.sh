@@ -2,7 +2,7 @@
 
 #set -x
 
-CODE="Research bin pub git tools LaTeX Personnel Makefiles public_html"
+CODE="Research bin git tools LaTeX Personnel"
 DOCS="Official LIGO_lang Pictures Turnstiles NOTES"
 MAIN="${CODE} ${DOCS} Desktop bib misc .thunderbird .opam .nvm"
 CONF=".aspell.en.prepl .aspell.en.pws .bash_history .bash_logout .bash_profile .bashrc .emacs .emacs_modes .gitconfig .profile .my_dircolors .XCompose .Xdefaults .xdvirc .xinputrc .xsession .Xsession .config .xmodmap_apple .ssh .dbus .dmrc"
