@@ -1,5 +1,5 @@
 # BASH initialisations
-# (c) Christian Rinderknecht, 2006--2015
+# (c) Christian Rinderknecht, 2006--2024
 
 # Bash knows different kinds of shells:
 #
@@ -113,12 +113,12 @@ export MIRROR=${HOMEPAGE}/Mirror
 #       /bin
 #
 HOME_BIN=$HOME/bin:$HOME/git/Scripts
-OPT_LOCAL_BIN=/opt/local/libexec/gnubin:/opt/local/sbin:/opt/local/bin
-USR_LOCAL_BIN=/usr/local/sbin:/usr/local/bin:./node_modules/.bin
-USR_BIN=/usr/sbin:/usr/bin:/usr/X11R6/bin:/usr/games
+OPT_LOCAL_BIN=
+USR_LOCAL_BIN=/usr/local/sbin:/usr/local/bin:$HOME/node_modules/.bin:.nvm/versions/node/v20.8.0/bin/:.cargo/bin
+USR_BIN=$HOME/bin
 SYS_BIN=/sbin:/bin
-
-export PATH=$HOME_BIN:$OPT_LOCAL_BIN:$USR_LOCAL_BIN:$USR_BIN:$SYS_BIN
+SNAP_BIN=/snap/bin
+export PATH=$HOME_BIN:$OPT_LOCAL_BIN:$USR_LOCAL_BIN:$USR_BIN:$SYS_BIN:$SNAP_BIN:$NIX_PATH
 
 # Manuals and info files
 #
@@ -153,10 +153,11 @@ then
 fi
 
 xmodmap ~/.xmodmap_apple 2>/dev/null
+
 #---------------------------------------------------------------------
 # Terminal settings
 #
-
+#
 # We want `ls' to use more colours (e.g., to show broken links)
 # Sourcing the ouput of `dircolors' sets the environment variable
 # LS_COLORS, which is read by `ls' for formatting the display.
@@ -166,7 +167,7 @@ xmodmap ~/.xmodmap_apple 2>/dev/null
 #   dircolors --bourne-shell --print-database >| ~/.my_dircolors
 #   source ~/.my_dircolors
 # fi
-
+#
 export CLICOLOR=true
 export LS_OPTIONS='--color=auto'
 export LSCOLORS='Bxgxfxfxcxdxdxhbadbxbx'
@@ -208,16 +209,10 @@ alias us="setxkbmap -layout 'us' -variant '' -option ''"
 #
 alias xquery='java -cp ~/bin/saxon.jar net.sf.saxon.Query'
 alias xslt='java -jar ~/bin/saxon.jar'
-#alias emacs='emacs $1 2>/dev/null'
-#alias evince='evince $1 2>/dev/null'
-#if test "$os_name" = "Darwin"
-#then alias updatedb='/usr/libexec/locate.updatedb'
-#fi
-#alias xdvi='xdvi $1 > /dev/null 2>&1'
 
 alias my_ip='curl https://ipinfo.io/ip'
 
-coqide() { (eval $(opam env --switch=4.07.0); exec coqide "$@"); }
+# coqide() { (eval $(opam env --switch=4.07.0); exec coqide "$@"); }
 
 #---------------------------------------------------------------------
 # Applications
@@ -266,42 +261,41 @@ export XMLLINT=$(which xmllint)
 #
 export TEXINPUTS=.::  # The empty string is necessary for TEXINPUTS
 
-# IBus on Linux
-#
-#if test "$os_name" = "Darwin"
-#then
-#  export GTK_IM_MODULE=ibus
-#  export XMODIFIERS="@im=ibus"
-#  export QT_IM_MODULE=ibus
-#fi
-
-#---------------------------------------------------------------------
-# Work around a bug in OS X 10.8 (Mountain Lion)
-#
-#unset LD_LIBRARY_PATH #=$HOME_LIB
-#unset DYLD_LIBRARY_PATH
-
 #---------------------------------------------------------------------
 # To silence complaints about accessibility bus (dbus)
 #
-export NO_AT_BRIDGE=1
+# export NO_AT_BRIDGE=1
 
 #---------------------------------------------------------------------
 # OPAM (OCaml package manager)
 #
-eval $(opam env) #--switch=ligo-switch --set-switch)
-#OPAMSWITCH='4.07.0'
+# eval $(opam env)
 
 #---------------------------------------------------------------------
 # XCompose
 #
 setxkbmap -option "compose:caps"
 
+#---------------------------------------------------------------------
+# NVM
+#
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 #---------------------------------------------------------------------
 # LIGO
+#
+export LIGO_JOBS=2
 
-LIGO_JOBS=2
+#---------------------------------------------------------------------
+# Dynamically/shared libraries
+#
+LD_LIBRARY_PATH=/usr/local/lib
+
+#---------------------------------------------------------------------
+# Nix
+#
+. $HOME/.nix-profile/etc/profile.d/nix.sh
+
+eval "$(direnv hook bash)"
