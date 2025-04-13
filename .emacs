@@ -92,12 +92,12 @@
  '(column-number-mode t)
  '(custom-enabled-themes '(wheatgrass))
  '(package-selected-packages
-   '(iedit json-mode exec-path-from-shell deferred use-package))
+   '(envrc kotlin-mode iedit json-mode exec-path-from-shell deferred use-package))
  '(safe-local-variable-values '((ispell-dictionary . "british")))
  '(save-place-mode t nil (saveplace))
  '(text-mode-hook
    '(turn-on-auto-fill
-     (lambda nil
+     (lambda ()
        (set-input-method "french-prefix"))
      text-mode-hook-identify))
  '(tool-bar-mode nil)
@@ -178,8 +178,8 @@
 ;; Draw tabs with the same color as trailing whitespace
 ;;
 (add-hook 'font-lock-mode-hook
-  '(lambda () (font-lock-add-keywords
-                 nil '(("\t" 0 'trailing-whitespace prepend)))))
+  (lambda () (font-lock-add-keywords
+              nil '(("\t" 0 'trailing-whitespace prepend)))))
 
 ;; Wrap long lines by word boundary
 ;;
@@ -225,8 +225,8 @@
     (cons '("Makefile\.in" . makefile-gmake-mode)
 auto-mode-alist)))
 
-(add-hook 'makefile-gmake-mode-hook '(lambda ()
- (setq makefile-gmake-indent 2)))
+(add-hook 'makefile-gmake-mode-hook
+          (lambda () (setq makefile-gmake-indent 2)))
 
 ;; -------------------------------------------------------------------
 ;; Java mode
@@ -279,12 +279,6 @@ auto-mode-alist)))
 (autoload 'markdown-mode "markdown-mode" "Markdown mode." t)
 
 ;; -------------------------------------------------------------------
-;; PascaLIGO
-;;
-(add-to-list 'auto-mode-alist '("\\.ligo$" . pascal-mode))
-(add-to-list 'auto-mode-alist '("\\.pligo$" . pascal-mode))
-
-;; -------------------------------------------------------------------
 ;; JsLIGO
 ;;
 (add-to-list 'auto-mode-alist '("\\.jsligo$" . js-mode))
@@ -325,7 +319,7 @@ auto-mode-alist)))
 ;;        ("or" . ,(decode-char 'ucs 8744)); 'LOGICAL OR' (U+2228)
         ("&&" . ,(decode-char 'ucs 8743)); 'LOGICAL AND' (U+2227)
         ("||" . ,(decode-char 'ucs 8744))
-        ("[|" . ,(decode-char 'ucs 12314)) ;; 〚
+        ("[|" . ,(decode-char 'ucs 12314)) ;;〚
         ("|]" . ,(decode-char 'ucs 12315)) ;; 〛
         ("*." . ,(decode-char 'ucs 215))
         ("/." . ,(decode-char 'ucs 247))
@@ -333,12 +327,12 @@ auto-mode-alist)))
         ("<-" . ,(decode-char 'ucs 8592))
         ("<=" . ,(decode-char 'ucs 8804))
         (">=" . ,(decode-char 'ucs 8805))
-;;        ("<>" . ,(decode-char 'ucs 8800))
-;;        ("==" . ,(decode-char 'ucs 8801))
+        ("<>" . ,(decode-char 'ucs 8800))
+        ("==" . ,(decode-char 'ucs 8801))
         ("!=" . ,(decode-char 'ucs 8802))
-        ("<=>" . ,(decode-char 'ucs 8660))
+;;        ("<=>" . ,(decode-char 'ucs 8660))
 ;;        (":=" . ,(decode-char 'ucs 8656))
-        ("infinity" . ,(decode-char 'ucs 8734))
+;;        ("infinity" . ,(decode-char 'ucs 8734))
         ;; Some greek letters for type parameters.
         ("'a" . ,(decode-char 'ucs 945))
         ("'b" . ,(decode-char 'ucs 946))
@@ -371,12 +365,22 @@ auto-mode-alist)))
 ;; -------------------------------------------------------------------
 ;; Merlin
 ;;
-(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
- (when (and opam-share (file-directory-p opam-share))
-  (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
-  (autoload 'merlin-mode "merlin" nil t nil)
-  (add-hook 'tuareg-mode-hook 'merlin-mode t)
-  (add-hook 'caml-mode-hook 'merlin-mode t)))
+
+(let ((merlin-path (getenv "MERLIN_PATH"))) ;; Set by flake.nix
+  (if (not merlin-path)
+    ;; Not in Nix shell
+    (progn
+      (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+      (let ((opam-share (ignore-errors (car (process-lines "OPAMSWITCH=default" "opam" "var" "share")))))
+         (when (and opam-share (file-directory-p opam-share))
+         (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share)))))
+    ;; In Nix shell
+    (progn
+      (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp" merlin-path)))))
+
+(autoload 'merlin-mode "merlin" nil t nil)
+(add-hook 'tuareg-mode-hook 'merlin-mode t)
+(add-hook 'caml-mode-hook 'merlin-mode t)
 (setq merlin-ac-setup 'easy)
 
 ;; -------------------------------------------------------------------
@@ -400,37 +404,13 @@ auto-mode-alist)))
 
 ;; TABs are changed into spaces.
 ;;
-(add-hook 'erlang-mode-hook '(lambda () (setq indent-tabs-mode nil)))
+(add-hook 'erlang-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
 ;; -------------------------------------------------------------------
 ;; Scala mode
 ;;
 ;; (add-to-list 'load-path "~/.emacs_modes/scala")
 ;; (require 'scala-mode-auto)
-
-;; -------------------------------------------------------------------
-;; Eiffel mode
-;;
-;;(add-to-list 'load-path "~/.emacs_modes/eiffel")
-;;(add-to-list 'auto-mode-alist '("\\.e$" . eiffel-mode))
-;;(autoload 'eiffel-mode "eiffel" "Eiffel mode." t)
-;;(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-;; '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 173 :width normal)))))
-
-;; -------------------------------------------------------------------
-;; Modelica mode
-
-;; (setq load-path (cons "~/.emacs_modes/modelica" load-path))
-;; (add-to-list 'auto-mode-alist '("\.mo$" . modelica-mode))
-;; (autoload 'modelica-mode "modelica-mode" "Modelica Editing Mode" t)
-
-;; Enable Modelica browsing
-;; (autoload 'mdc-browse "mdc-browse" "Modelica Class Browsing" t)
-;; (autoload 'br-mdc "br-mdc" "Modelica Class Browsing" t)
 
 ;; -------------------------------------------------------------------
 ;; Graphiz dot
@@ -466,6 +446,8 @@ auto-mode-alist)))
 (add-to-list 'load-path "~/.emacs_modes/lilypond")
 (add-to-list 'auto-mode-alist '("\\.ly$" . lilypond-mode))
 (autoload 'lilypond-mode "lilypond-mode" "Lilypond mode." t)
-;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-;; ## end of OPAM user-setup addition for emacs / base ## keep this line
+
+;; -------------------------------------------------------------------
+;; envrc
+
+;; (add-hook 'after-init-hook 'envrc-global-mode)
