@@ -32,10 +32,11 @@
 ;;
 ;; Key translations Starting With C-x:
 ;; C-x 8 ?       ¿
-;; C-x 8 !         ¡
-;; C-x 8 <         «
-;; C-x 8 >         »
-;;  -------------------------------------------------------------------
+;; C-x 8 !       ¡
+;; C-x 8 <       «
+;; C-x 8 >       »
+
+;; -------------------------------------------------------------------
 ;; Package management
 
 (require 'package)
@@ -55,13 +56,6 @@
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
-
-;; Different default fonts depending on the machine
-;;
-;; (if (string-equal system-name "haechi")
-;;     (set-default-font "Monospace-14")
-;;     (if (string-equal system-name "dorongnyong.local")
-;;         (set-default-font "Monospace-14")))
 
 (defun set_small_font () (interactive)
        (custom-set-faces '(default ((t (:inherit nil :stipple
@@ -89,15 +83,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(case-fold-search nil)
- '(column-number-mode t)
  '(custom-enabled-themes '(wheatgrass))
  '(package-selected-packages
-   '(envrc kotlin-mode iedit json-mode exec-path-from-shell deferred use-package))
+   '(rust-mode envrc kotlin-mode iedit json-mode exec-path-from-shell deferred use-package))
  '(safe-local-variable-values '((ispell-dictionary . "british")))
  '(save-place-mode t nil (saveplace))
  '(text-mode-hook
    '(turn-on-auto-fill
-     (lambda ()
+     (lambda nil
        (set-input-method "french-prefix"))
      text-mode-hook-identify))
  '(tool-bar-mode nil)
@@ -105,12 +98,7 @@
 
 ;; Main window geometry
 ;;
-;; (if (string-equal system-name "haechi")
-;;     (setq default-frame-alist '((height . 30)(width . 82)))
-;;     (if (string-equal system-name "dorongnyong.local")
-;;         (setq default-frame-alist '((height . 125)(width . 70)))))
 (setq default-frame-alist '((height . 145)(width . 79)))
-;;(setq default-frame-alist '((height . 35)(width . 79)))
 
 ;; Stop leaving backup~ files scattered everywhere
 ;;
@@ -242,18 +230,13 @@ auto-mode-alist)))
 ;; -------------------------------------------------------------------
 ;; Prolog mode (SWI-Prolog)
 ;;
-;; (if (string-equal system-name "dorongnyong.local")
-;;   (setq load-path (cons "/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes" load-path))
-;;   (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
-;;   (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t))
+(setq auto-mode-alist
+  (append '(("\\.pl$" . prolog-mode)
+            ("\\.P$"  . prolog-mode)) auto-mode-alist))
 
-;; (setq auto-mode-alist
-;;   (append '(("\\.pl$" . prolog-mode)
-;;             ("\\.P$"  . prolog-mode)) auto-mode-alist))
-
-;; (setq prolog-program-name "pl")
-;; (setq prolog-consult-string "[user].\n")
-;; (setq prolog-indent-width 4)
+(setq prolog-program-name "pl")
+(setq prolog-consult-string "[user].\n")
+(setq prolog-indent-width 4)
 
 ;; -------------------------------------------------------------------
 ;; Promela mode
@@ -277,11 +260,6 @@ auto-mode-alist)))
 (add-to-list 'load-path "~/.emacs_modes/markdown")
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 (autoload 'markdown-mode "markdown-mode" "Markdown mode." t)
-
-;; -------------------------------------------------------------------
-;; JsLIGO
-;;
-(add-to-list 'auto-mode-alist '("\\.jsligo$" . js-mode))
 
 ;; -------------------------------------------------------------------
 ;; Dune
@@ -389,11 +367,10 @@ auto-mode-alist)))
 ;; (add-to-list 'auto-mode-alist'("\\.eml" . text-mode))
 
 ;; -------------------------------------------------------------------
-;; nXML mode for XSLT and XML
+;; nXML mode for XSLT and XML (default in Emacs nowadays)
 ;;
-(add-to-list 'load-path "~/.emacs_modes/xml")
-(add-to-list 'auto-mode-alist
-             '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\)\\'" . nxml-mode))
+;; (add-to-list 'auto-mode-alist
+;;             '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\)\\'" . nxml-mode))
 
 ;; -------------------------------------------------------------------
 ;; Erlang mode
@@ -421,17 +398,16 @@ auto-mode-alist)))
 
 ;; -------------------------------------------------------------------
 ;; Michelson
-
+;;
 ;; (use-package deferred :ensure t)
 ;; (use-package exec-path-from-shell :ensure t)
-
 ;; (load "~/git/tezos/emacs/michelson-mode.el" nil t)
 ;; (setq michelson-client-command "tezos-client")
 ;; (setq michelson-alphanet nil)
 
 ;; -------------------------------------------------------------------
 ;; JavaScript
-
+;;
 (setq js-indent-level 2)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -442,12 +418,31 @@ auto-mode-alist)))
 
 ;; -------------------------------------------------------------------
 ;; Lilypond
-
+;;
 (add-to-list 'load-path "~/.emacs_modes/lilypond")
 (add-to-list 'auto-mode-alist '("\\.ly$" . lilypond-mode))
 (autoload 'lilypond-mode "lilypond-mode" "Lilypond mode." t)
 
 ;; -------------------------------------------------------------------
 ;; envrc
-
+;;
 ;; (add-hook 'after-init-hook 'envrc-global-mode)
+
+;; -------------------------------------------------------------------
+;; Rust
+;;
+(add-to-list 'load-path "~/.emacs_modes/rust-mode")
+(autoload 'rust-mode "rust-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+;; -------------------------------------------------------------------
+;; JsLIGO
+;;
+;; (add-to-list 'auto-mode-alist '("\\.jsligo$" . js-mode))
+
+;; -------------------------------------------------------------------
+;; YAML
+;;
+(add-to-list 'load-path "~/.emacs_modes/yaml")
+(autoload 'yaml-mode "yaml-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
