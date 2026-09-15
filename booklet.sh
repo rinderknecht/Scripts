@@ -54,7 +54,7 @@ usage () {
   cat <<EOF
 Usage: $(basename $0) -o <booklet>.[ps|pdf] <doc>.ps
 
-Convert a PostScript document into an A4  booklet. Utilities
+Convert a PostScript document into an A4 booklet. Utilities
 \`psbook' and \`pstops' (also \`ps2pdf' in case of a PDF output) must
 be installed and accessible through the environment variable PATH.
 
@@ -72,7 +72,7 @@ while : ; do
     "") break;;
       # Help
       #
-    -h | --help | -help) 
+    -h | --help | -help)
       help=yes
       help_opt=$1
       ;;
@@ -108,7 +108,7 @@ while : ; do
       if test -n "$doc_arg"
       then
         fatal_error "Only one document allowed."
-      fi  
+      fi
       doc=yes
       doc_arg=$1
       ;;

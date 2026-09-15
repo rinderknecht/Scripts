@@ -4,9 +4,14 @@
 
 ;; -------------------------------------------------------------------
 ;; Useful Tips
+
+;; To convert a buffer to UTF-8:
+;; C-x RET f utf-8 RET
+;; Then:
+;; C-x C-s
 ;;
-;; Ctrl-x Ctrl-+ Enlarge font
-;; Ctrl-x Ctrl-- Shrink font
+;; C-x C-+ Enlarge font
+;; C-x C-- Shrink font
 ;;
 ;; Reloading this file:
 ;; M-x load-file
@@ -41,7 +46,9 @@
 
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 (unless (require 'use-package nil 'noerror)
  (package-refresh-contents)
@@ -57,23 +64,12 @@
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 
-(defun set_small_font () (interactive)
-       (custom-set-faces '(default ((t (:inherit nil :stipple
-        nil :background "black" :foreground "wheat" :inverse-video
-        nil :box nil :strike-through nil :overline nil :underline
-        nil :slant normal :weight normal :height 142 :width
-        normal :foundry "PfEd" :family "DejaVu Sans Mono"))))))
-
-(global-set-key (kbd "C-s-f") 'set_small_font)
-
-(defun set_large_font () (interactive)
-       (custom-set-faces '(default ((t (:inherit nil :stipple
-        nil :background "black" :foreground "wheat" :inverse-video
-        nil :box nil :strike-through nil :overline nil :underline
-        nil :slant normal :weight normal :height 170 :width
-        normal :foundry "PfEd" :family "DejaVu Sans Mono"))))))
-
-(global-set-key (kbd "C-s-g") 'set_large_font)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Ubuntu Sans Mono" :foundry "DAMA" :slant normal :weight regular :height 120 :width normal)))))
 
 ;; Customisations
 ;;
@@ -83,18 +79,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(case-fold-search nil)
+ '(column-number-mode t)
  '(custom-enabled-themes '(wheatgrass))
  '(package-selected-packages
-   '(rust-mode envrc kotlin-mode iedit json-mode exec-path-from-shell deferred use-package))
+   '(lsp-mode boogie-friends rust-mode envrc kotlin-mode iedit json-mode exec-path-from-shell deferred use-package))
  '(safe-local-variable-values '((ispell-dictionary . "british")))
  '(save-place-mode t nil (saveplace))
- '(text-mode-hook
-   '(turn-on-auto-fill
-     (lambda nil
-       (set-input-method "french-prefix"))
-     text-mode-hook-identify))
  '(tool-bar-mode nil)
- '(tuareg-font-lock-symbols t))
+ '(tuareg-font-lock-symbols t)
+ '(uniquify-buffer-name-style nil nil (uniquify)))
 
 ;; Main window geometry
 ;;
@@ -125,19 +118,11 @@
 
 ;; Always end a file with a newline
 ;;
-(setq require-final-newline nil)
-
-;; Stop at the end of the file, not just add lines
-;;
-(setq next-line-add-newlines nil)
+(setq require-final-newline t) ;; Set to "nil" for the opposite.
 
 ;; Show carriage return and end of file characters (MS DOS text files)
 ;;
-(setq inhibit-eol-conversion nil)
-
-;; Tabulations displayed as 2 blank characters by default
-;;
-(setq default-tab-width 2)
+(setq inhibit-eol-conversion t) ;; Set to "nil" for the opposite.
 
 ;; Show line-number in the mode line
 ;;
@@ -175,7 +160,7 @@
 
 ;; Electric buffer and no startup message
 ;;
-(global-set-key "" 'electric-buffer-list)
+(global-set-key (kbd "C-x C-b") 'electric-buffer-list)
 
 (setq inhibit-startup-message t)
 
@@ -184,34 +169,30 @@
 (add-hook 'text-mode-hook
   (lambda () (set-input-method "french-prefix")))
 
-(add-hook 'latex-mode-hook
-  (lambda () (set-input-method "french-prefix")))
-
 ;; UTF-8 encoding
-;
+;;
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;; No lock files (they mess with some build systems)
+;;
+(setq create-lockfiles nil)
+
 ;; -------------------------------------------------------------------
 ;; Spell checker in Emacs is `aspell'
 ;;
-(if (string-equal system-name "haechi")
-    (setq ispell-program-name "/usr/bin/aspell")
-  (if (string-equal system-name "dorongnyong.local")
-      (setq ispell-program-name "/opt/local/bin/aspell")))
+(let ((aspell (executable-find "aspell")))
+  (when aspell (setq ispell-program-name aspell)))
 
 (setq ispell-dictionary "british")
 
 ;; -------------------------------------------------------------------
 ;; GNU Makefile mode
 ;;
-(setq auto-mode-alist
-  (cons '("Makefile" . makefile-gmake-mode)
-    (cons '("Makefile\.in" . makefile-gmake-mode)
-auto-mode-alist)))
+(add-to-list 'auto-mode-alist '("\\`Makefile\\(\\.in\\)?\\'" . makefile-gmake-mode))
 
 (add-hook 'makefile-gmake-mode-hook
           (lambda () (setq makefile-gmake-indent 2)))
@@ -220,9 +201,6 @@ auto-mode-alist)))
 ;; Java mode
 ;;
 (global-font-lock-mode t)
-
-(add-hook 'java-mode-hook (lambda () (setq c-basic-offset 2)))
-
 (add-hook 'java-mode-hook (lambda () (setq c-basic-offset 2
                                       tab-width 2
                                       indent-tabs-mode nil)))
@@ -257,9 +235,9 @@ auto-mode-alist)))
 ;; -------------------------------------------------------------------
 ;; Markdown
 ;;
-(add-to-list 'load-path "~/.emacs_modes/markdown")
-(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-(autoload 'markdown-mode "markdown-mode" "Markdown mode." t)
+;; (add-to-list 'load-path "~/.emacs_modes/markdown")
+;; (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+;; (autoload 'markdown-mode "markdown-mode" "Markdown mode." t)
 
 ;; -------------------------------------------------------------------
 ;; Dune
@@ -289,7 +267,6 @@ auto-mode-alist)))
                 ("\\.mligo$" . tuareg-mode)
                 ("\\.topml$" . tuareg-mode))
               auto-mode-alist))
-(require 'tuareg)
 (setq tuareg-font-lock-symbols-alist
       `(("fun" . ,(decode-char 'ucs 955))
         ("sqrt" . ,(decode-char 'ucs 8730))
@@ -323,7 +300,7 @@ auto-mode-alist)))
         ;; ("'m" . ,(decode-char 'ucs 956))
         ;; ("'n" . ,(decode-char 'ucs 957))
         ;; ("'o" . ,(decode-char 'ucs 969))
-        ;; ("'p" . ,(decode-char 'ucs 960))
+        ("'p" . ,(decode-char 'ucs 960))
         ;; ("'r" . ,(decode-char 'ucs 961))
         ;; ("'s" . ,(decode-char 'ucs 963))
         ;; ("'t" . ,(decode-char 'ucs 964))
@@ -408,20 +385,16 @@ auto-mode-alist)))
 ;; -------------------------------------------------------------------
 ;; JavaScript
 ;;
-(setq js-indent-level 2)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 128 :width normal)))))
+;; (setq js-indent-level 2)
 
 ;; -------------------------------------------------------------------
 ;; Lilypond
 ;;
-(add-to-list 'load-path "~/.emacs_modes/lilypond")
-(add-to-list 'auto-mode-alist '("\\.ly$" . lilypond-mode))
-(autoload 'lilypond-mode "lilypond-mode" "Lilypond mode." t)
+(setq load-path (append (list (expand-file-name "~/site-lisp")) load-path))
+
+;;(add-to-list 'load-path "~/.emacs_modes/lilypond")
+;;(add-to-list 'auto-mode-alist '("\\.ly$" . lilypond-mode))
+;;(autoload 'lilypond-mode "lilypond-mode" "Lilypond mode." t)
 
 ;; -------------------------------------------------------------------
 ;; envrc
@@ -446,3 +419,28 @@ auto-mode-alist)))
 (add-to-list 'load-path "~/.emacs_modes/yaml")
 (autoload 'yaml-mode "yaml-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;; -------------------------------------------------------------------
+;; CRAM tests
+;;
+(add-to-list 'load-path "~/.emacs_modes/cram")
+(autoload 'cram-mode "cram-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.t$" . cram-mode))
+
+;; -------------------------------------------------------------------
+;; Dafny
+;;
+(require 'flycheck)
+(require 'dafny-mode)
+(setq flycheck-dafny-executable "/home/rinderkn/tools/src/dafny/dafny")
+
+;; (add-to-list 'load-path "~/.emacs_modes/dafny/emacs")
+;; (autoload 'dafny-mode "boogie-friends" nil t)
+;; (add-to-list 'auto-mode-alist '("\\.dfy$" . dafny-mode))
+
+;; -------------------------------------------------------------------
+;; Lean
+;;
+(add-to-list 'load-path "~/.emacs_modes/lean4-mode")
+(require 'lsp-mode)
+(require 'lean4-mode)

@@ -4,8 +4,6 @@
 # method described by Mike Rubel at
 # http://www.mikerubel.org/computers/rsync_snapshots/
 
-# $Id: snapshot.sh 8433 2016-08-15 09:31:23Z rinderkn $
-
 #set -x
 
 # ====================================================================

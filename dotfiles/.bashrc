@@ -1,5 +1,5 @@
 # BASH initialisations
-# (c) Christian Rinderknecht, 2006--2025
+# (c) Christian Rinderknecht, 2006--2026
 
 # Bash knows different kinds of shells:
 #
@@ -46,9 +46,15 @@
 #
 # OUR POLICY
 #
-# We put every initialisation in ~/.bashrc and source it from
+# We put every initialisation in ~/.bashrc, and source it from
 # ~/.bash_profile. This way, all interactive shells will use the same
 # settings.
+
+# GIT
+#
+# To have git display non-ASCII file names:
+#
+# $ git config --global core.quotepath false
 
 #=====================================================================
 # Debugging
@@ -69,29 +75,29 @@
 #=====================================================================
 # General settings
 
-#---------------------------------------------------------------------
+# So nothing runs in non-interactive mode
+
+[[ $- != *i* ]] && return
+
 # X11 server
 #
-export DISPLAY=:0.0
+#export DISPLAY=:0.0
 
-#---------------------------------------------------------------------
-# Kill CAPS lock
-#
-setxkbmap -option caps:none
-
-#---------------------------------------------------------------------
+# Kill CAPS LOCK
+# XCompose (accents and symbols)
 # Remapping the Apple Wireless keyboard with X11
 #
-xmodmap ~/.xmodmap_apple 2>/dev/null
+if [ -n "$DISPLAY" ]; then
+  setxkbmap -option caps:none -option "compose:caps"
+  xmodmap ~/.xmodmap_apple 2>/dev/null
+fi
 
-#---------------------------------------------------------------------
 # Bristish English as language locale
 #
 export LC_CTYPE=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LC_TIME=en_GB.UTF-8
 
-#---------------------------------------------------------------------
 # Paths (see the end of this file for final export of PATH)
 #
 # From highest to lowest priority:
@@ -112,172 +118,128 @@ export LC_TIME=en_GB.UTF-8
 #       /sbin
 #       /bin
 #
-HOME_BIN=$HOME/bin:$HOME/git/Scripts:$HOME/.nitrile/bin:$HOME/node_modules/.bin
+HOME_BIN=$HOME/bin:$HOME/git/Scripts:$HOME/node_modules/.bin
 USR_LOCAL_BIN=/usr/local/sbin:/usr/local/bin
-REL_BIN=:.nvm/versions/node/v20.8.0/bin/:.cargo/bin
+REL_BIN=$HOME/.cargo/bin:$HOME/tools/src/dafny:$HOME/.elan/bin
 SYS_BIN=/sbin:/bin
 SNAP_BIN=/snap/bin
 export PATH=$HOME_BIN:$REL_BIN:$USR_LOCAL_BIN:$SYS_BIN:$SNAP_BIN
 #:$NIX_PATH
 
-LD_LIBRARY_PATH=/usr/local/lib
+export LD_LIBRARY_PATH=/usr/local/lib
 
-#---------------------------------------------------------------------
 # Manuals and info files
 #
 # In the same order as the binary paths.
 #
 MAN=$HOME/man:$HOME/share/man:/usr/local/man:/usr/local/share/man:/usr/share/man
-export INFOPATH=.:$HOME/info:/usr/local/info:/usr/local/share/info:/usr/share/info
+export INFOPATH=$HOME/info:/usr/local/info:/usr/local/share/info:/usr/share/info
 export MANPATH=$MANPATH:$MAN
 
-#---------------------------------------------------------------------
 # Public access rights as a default
 #
 umask 022
 
-#---------------------------------------------------------------------
 # No core files by default and unlimited RAM and 2048 file handlers
 #
 ulimit -S -c 0 > /dev/null 2>&1
-ulimit -f unlimited # 2000000
+ulimit -f unlimited
 ulimit -n 2048
 
-#---------------------------------------------------------------------
 # No Num Lock
 #
 #[ ! -z "$DISPLAY" ] && numlockx off
 
-#---------------------------------------------------------------------
 # After any history actions, place the resulting line to the command
 # prompt for review:
 #
 shopt -s histverify
 
-#---------------------------------------------------------------------
+shopt -s histappend
+export HISTCONTROL=ignoredups:erasedups
+export HISTSIZE=5000
+export HISTFILESIZE=10000
+
 # Terminal settings
 #
-#
-# We want `ls' to use more colours (e.g., to show broken links)
-# Sourcing the ouput of `dircolors' sets the environment variable
-# LS_COLORS, which is read by `ls' for formatting the display.
-#
-# if test ! -s ~/.my_dircolors -a -n "`type -P dircolors`"
-# then
-#   dircolors --bourne-shell --print-database >| ~/.my_dircolors
-#   source ~/.my_dircolors
-# fi
-#
 export CLICOLOR=true
-export LS_OPTIONS='--color=auto'
-export LSCOLORS='Bxgxfxfxcxdxdxhbadbxbx'
 
-#---------------------------------------------------------------------
-# Prompts
+# Prompt
 #
-USER=$(whoami)
+export PS1='\[\033]0;\u@\h:\w\007\]\$ '
 
-if test "$USER" = "root"
-then
-  export PS2="#"
-  export PS1='\[\033]0;\u@\h:\w\007\]# '
-else
-  export PS2="$"
-  export PS1='\[\033]0;\u@\h:\w\007\]$ '
-fi
+# Saxon (XSLT/XQuery/XPath)
+#
+export SAXON=$HOME/bin/saxon.jar
 
-#---------------------------------------------------------------------
 # Aliases
 
 shopt -s expand_aliases
 
-#---------------------------------------------------------------------
-# Aliases
-#
 alias rm='\rm -i'
 alias cp='\cp -i'
 alias mv='\mv -i'
 alias ls='\ls --color=auto'
-#alias xdvi='xdvi $1 > /dev/null 2>&1'
 #alias fr="setxkbmap -layout 'fr' -variant 'oss' -option ''"
 #alias us="setxkbmap -layout 'us' -variant '' -option ''"
 
-alias xquery='java -cp ~/bin/saxon.jar net.sf.saxon.Query'
-alias xslt='java -jar ~/bin/saxon.jar'
+alias xquery='java -cp $SAXON net.sf.saxon.Query'
+alias xslt='java -jar $SAXON'
 alias discord='discord > /dev/null 2>&1'
 alias my_ip='curl https://ipinfo.io/ip'
+
+alias runtest='timeout 2 dune runtest'
 
 #=====================================================================
 # Applications
 
-#---------------------------------------------------------------------
 # Emacs
 #
 export EDITOR=emacs
-EMACS_LIB=$HOME/lib/emacs
-HOME_LIB=$EMACS_LIB
 
-#---------------------------------------------------------------------
 # Erlang
 #
 export ERLC=erlc
 
-#---------------------------------------------------------------------
 # Prolog
 #
 export SWIPL=swipl
 
-#---------------------------------------------------------------------
 # Java
 #
 # To select a given version:
 # $ sudo update-alternatives --config java
 #
-export CLASSPATH=.
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
-export JAVA=$(which java)
-export JAVAC=$(which javac)
+if command -v java >/dev/null 2>&1; then
+  export JAVA=$(command -v java)
+  export JAVAC=$(command -v javac)
+  export JAVA_HOME=$(readlink -f "$JAVA" | sed 's:/bin/java$::')
+fi
 
-#---------------------------------------------------------------------
-# Saxon (XSLT/XQuery/XPath)
-#
-export SAXON=$HOME/bin/saxon.jar
-
-#---------------------------------------------------------------------
 # Xmllint
 #
-export XMLLINT=$(which xmllint)
+command -v xmllint >/dev/null 2>&1 && export XMLLINT=$(command -v xmllint)
 
-#---------------------------------------------------------------------
 # LaTeX/TeX (TeX Live distribution)
 #
 export TEXINPUTS=.::  # The empty string is necessary for TEXINPUTS
 
-#---------------------------------------------------------------------
-# XCompose (accents and symbols)
-#
-setxkbmap -option "compose:caps"
-
-#---------------------------------------------------------------------
 # NVM
 #
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-#---------------------------------------------------------------------
 # Nix
 #
 #. $HOME/.nix-profile/etc/profile.d/nix.sh
 #
 #eval "$(direnv hook bash)"
 
-#---------------------------------------------------------------------
-# OPAM (OCaml package manager)
-#
-eval $(opam env)
-
-#---------------------------------------------------------------------
 # Rust
 #
-. "$HOME/.cargo/env"
+#. "$HOME/.cargo/env"
+
+# OPAM (OCaml package manager)
+#
+command -v opam >/dev/null 2>&1 && eval "$(opam env --switch=5.5.1 2>/dev/null)"

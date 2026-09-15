@@ -2,8 +2,8 @@
 
 #set -x
 
-MAIN="Research bin git tools Official Pictures Turnstiles NOTES Private Desktop bib misc .thunderbird .opam .nvm"
-CONF=".aspell.en.prepl .aspell.en.pws .bash_history .bash_logout .bash_profile .bashrc .emacs .emacs_modes .gitconfig .profile .my_dircolors .XCompose .Xdefaults .xdvirc .xinputrc .xsession .Xsession .config .xmodmap_apple .ssh .dbus .dmrc"
+MAIN="Research bin git tools Official Pictures Turnstiles Private Desktop bib misc .thunderbird .opam"
+CONF=".bash_history .bash_logout .bash_profile .bashrc .emacs .emacs_modes .gitconfig .profile .XCompose .config .xmodmap_apple .ssh"
 ALL="${MAIN} ${CONF}"
 
 prefix=/media/rinderkn/Backup
