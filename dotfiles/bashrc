@@ -83,15 +83,6 @@
 #
 #export DISPLAY=:0.0
 
-# Kill CAPS LOCK
-# XCompose (accents and symbols)
-# Remapping the Apple Wireless keyboard with X11
-#
-if [ -n "$DISPLAY" ]; then
-  setxkbmap -option caps:none -option "compose:caps"
-  xmodmap ~/.xmodmap_apple 2>/dev/null
-fi
-
 # Bristish English as language locale
 #
 export LC_CTYPE=en_GB.UTF-8
