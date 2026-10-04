@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # This script checks the validity of one symbolic link. It is called
-# by the script check_links.sh.
+# by the scripts check_links.sh and symlinks.sh
 #
 # Author: Christian Rinderknecht
 
@@ -89,7 +89,7 @@ if test -n "$base_arg"
 then directory=$(dirname "$base_arg")
      ls_info=$(ls -l "$base_arg" 2>&1)
      if test $? -ne 0
-     then fatal_error "Symbolic link not found"
+     then fatal_error "Symbolic link not found."
      fi
      points_to=$(echo "$ls_info" | sed 's|.* -> \(.*\)|\1|g')
     (cd $directory > /dev/null
@@ -100,5 +100,5 @@ then directory=$(dirname "$base_arg")
          else echo " $directory."
          fi
      fi)
-else fatal_error "Provide a symbolic link"
+else fatal_error "Provide a symbolic link."
 fi
