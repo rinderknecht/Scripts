@@ -1,3 +1,6 @@
+# OBSOLETE (Used to work with X11, not Wayland)
+# See etc/keyd/default.conf now
+
 clear Control
 clear Mod1
 clear Mod4

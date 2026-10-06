@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# OBSOLETE (Used to work with X11, not Wayland)
+# See etc/keyd/default.conf now
+
 # At least once, do:
 # $ gsettings set org.gnome.desktop.input-sources xkb-options "['compose:caps']"
 
