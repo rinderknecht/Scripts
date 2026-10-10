@@ -1,0 +1,10 @@
+$ wmctrl -l
+0x02200015 -1 piccolo Desktop Icons 1
+0x02200019 -1 piccolo Desktop Icons 2
+0x03600004  0 piccolo LaTeX alignment tab error in alltt environment - Claude - Google Chrome
+0x02400004  0 piccolo Hazlett - My Skin
+0x02800010  0 piccolo rinderkn@piccolo:~/git/EKKE/GC
+0x04000148  0 piccolo fm.tex - GNU Emacs at piccolo
+0x01e0000d  0 piccolo gc.pdf — Introduction to Garbage Collection
+$ xdotool windowmove 0x01e0000d 100 2300
+$
