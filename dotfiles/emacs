@@ -449,3 +449,6 @@
 
 (require 'lsp-mode)
 (require 'lean4-mode)
+
+;; C-c C-i opens Lean Goals
+;; C-c C-d refreshes the dependencies
