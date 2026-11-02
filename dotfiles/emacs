@@ -217,13 +217,6 @@
 (setq prolog-indent-width 4)
 
 ;; -------------------------------------------------------------------
-;; Promela mode
-;;
-;; (add-to-list 'load-path "~/.emacs_modes/promela")
-;; (add-to-list 'auto-mode-alist '("\\.pml$" . promela-mode))
-;; (autoload 'promela-mode "promela-mode" "Promela mode." t)
-
-;; -------------------------------------------------------------------
 ;; ASN.1 & GDMO
 ;;
 (add-to-list 'load-path "~/.emacs_modes/asn1")
@@ -233,25 +226,9 @@
 (autoload 'asn1-mode "asn1-mode" "ASN.1 mode." t)
 
 ;; -------------------------------------------------------------------
-;; Markdown
-;;
-;; (add-to-list 'load-path "~/.emacs_modes/markdown")
-;; (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
-;; (autoload 'markdown-mode "markdown-mode" "Markdown mode." t)
-
-;; -------------------------------------------------------------------
 ;; Dune
 ;;
 (add-to-list 'auto-mode-alist '("dune$" . lisp-mode))
-
-;; -------------------------------------------------------------------
-;; OCaml mode
-;;
-;; (add-to-list 'load-path "~/.emacs_modes/ocaml")
-;; (add-to-list 'auto-mode-alist '("\\.ml[iylp]?$" . caml-mode))
-;; (autoload 'caml-mode "caml" "OCaml mode." t)
-
-;; (if window-system (require 'caml-font))
 
 ;; -------------------------------------------------------------------
 ;; Tuareg mode
@@ -259,25 +236,12 @@
 (add-to-list 'load-path "~/.emacs_modes/tuareg")
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-;;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
-;;  "Configuration of imenu for tuareg" t)
-;;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 (setq auto-mode-alist
-      (append '(("\\.ml[ily]?$" . tuareg-mode)
-                ("\\.mligo$" . tuareg-mode)
-                ("\\.topml$" . tuareg-mode))
-              auto-mode-alist))
+      (append '(("\\.ml[ily]?$" . tuareg-mode)) auto-mode-alist))
 (setq tuareg-font-lock-symbols-alist
       `(("fun" . ,(decode-char 'ucs 955))
-        ("sqrt" . ,(decode-char 'ucs 8730))
-;;        ("not" . ,(decode-char 'ucs 172))
-;;        ("or" . ,(decode-char 'ucs 8744)); 'LOGICAL OR' (U+2228)
-        ("&&" . ,(decode-char 'ucs 8743)); 'LOGICAL AND' (U+2227)
+        ("&&" . ,(decode-char 'ucs 8743))
         ("||" . ,(decode-char 'ucs 8744))
-        ("[|" . ,(decode-char 'ucs 12314)) ;;〚
-        ("|]" . ,(decode-char 'ucs 12315)) ;; 〛
-        ("*." . ,(decode-char 'ucs 215))
-        ("/." . ,(decode-char 'ucs 247))
         ("->" . ,(decode-char 'ucs 8594))
         ("<-" . ,(decode-char 'ucs 8592))
         ("<=" . ,(decode-char 'ucs 8804))
@@ -285,69 +249,90 @@
         ("<>" . ,(decode-char 'ucs 8800))
         ("==" . ,(decode-char 'ucs 8801))
         ("!=" . ,(decode-char 'ucs 8802))
+        ;; My own symbols
+        ("<@" . ?○)
+        ("|>" . ?▷)
+        ("@@" . ?⥁)
+;;        ("[|" . ,(decode-char 'ucs 12314)) ;;〚
+;;        ("|]" . ,(decode-char 'ucs 12315)) ;; 〛
+;;        ("*." . ,(decode-char 'ucs 215))
+;;        ("/." . ,(decode-char 'ucs 247))
+;;        ("sqrt" . ,(decode-char 'ucs 8730))
+;;        ("not" . ,(decode-char 'ucs 172))
+;;        ("or" . ,(decode-char 'ucs 8744))
 ;;        ("<=>" . ,(decode-char 'ucs 8660))
 ;;        (":=" . ,(decode-char 'ucs 8656))
 ;;        ("infinity" . ,(decode-char 'ucs 8734))
-        ;; Some greek letters for type parameters.
+        ;; Some Greek letters for the type parameters
         ("'a" . ,(decode-char 'ucs 945))
         ("'b" . ,(decode-char 'ucs 946))
         ("'c" . ,(decode-char 'ucs 947))
         ("'d" . ,(decode-char 'ucs 948))
-        ;; ("'e" . ,(decode-char 'ucs 949))
-        ;; ("'f" . ,(decode-char 'ucs 966))
-        ;; ("'i" . ,(decode-char 'ucs 953))
-        ;; ("'k" . ,(decode-char 'ucs 954))
-        ;; ("'m" . ,(decode-char 'ucs 956))
-        ;; ("'n" . ,(decode-char 'ucs 957))
-        ;; ("'o" . ,(decode-char 'ucs 969))
-        ("'p" . ,(decode-char 'ucs 960))
-        ;; ("'r" . ,(decode-char 'ucs 961))
-        ;; ("'s" . ,(decode-char 'ucs 963))
-        ;; ("'t" . ,(decode-char 'ucs 964))
-        ;; ("'x" . ,(decode-char 'ucs 958))
-        ;; Mine
-        ("<@" . ?○)
-        ("|>" . ?▷)
-        ("@@" . ?⥁)
+;;        ("'e" . ,(decode-char 'ucs 949))
+;;        ("'f" . ,(decode-char 'ucs 966))
+;;        ("'i" . ,(decode-char 'ucs 953))
+;;        ("'k" . ,(decode-char 'ucs 954))
+;;        ("'m" . ,(decode-char 'ucs 956))
+;;        ("'n" . ,(decode-char 'ucs 957))
+;;        ("'o" . ,(decode-char 'ucs 969))
+;;        ("'p" . ,(decode-char 'ucs 960))
+;;        ("'r" . ,(decode-char 'ucs 961))
+;;        ("'s" . ,(decode-char 'ucs 963))
+;;        ("'t" . ,(decode-char 'ucs 964))
+;;        ("'x" . ,(decode-char 'ucs 958))
 ))
-
-;; -------------------------------------------------------------------
-;; OCP Ident
-
-;;(add-to-list 'load-path "/home/rinderkn/.opam/default/share/emacs/site-lisp")
-;;(require 'ocp-indent)
 
 ;; -------------------------------------------------------------------
 ;; Merlin
 ;;
+;; C-c C-l : go to definition
+;; C-c &   : return to previous location
+;; C-c C-t : show type of enclosed expression
+;; C-c C-d : show documentation
+;;
+;; To control go-to-definition:
+;; (setq merlin-locate-preference 'ml)  ; prefer implementation
+;; or
+;; (setq merlin-locate-preference 'mli) ; prefer interface
 
-(let ((merlin-path (getenv "MERLIN_PATH"))) ;; Set by flake.nix
-  (if (not merlin-path)
-    ;; Not in Nix shell
-    (progn
-      (require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-      (let ((opam-share (ignore-errors (car (process-lines "OPAMSWITCH=default" "opam" "var" "share")))))
-         (when (and opam-share (file-directory-p opam-share))
-         (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share)))))
-    ;; In Nix shell
-    (progn
-      (add-to-list 'load-path (expand-file-name "share/emacs/site-lisp" merlin-path)))))
+;; Merlin: support either a Nix-provided Merlin or the active OPAM switch.
+(let ((merlin-path (getenv "MERLIN_PATH")))
+  (cond
+   ;; Nix shell / Nix-provided Merlin.
+   ((and merlin-path
+         (file-directory-p
+          (expand-file-name "share/emacs/site-lisp" merlin-path)))
+    (add-to-list 'load-path
+                 (expand-file-name "share/emacs/site-lisp" merlin-path)))
 
-(autoload 'merlin-mode "merlin" nil t nil)
-(add-hook 'tuareg-mode-hook 'merlin-mode t)
-(add-hook 'caml-mode-hook 'merlin-mode t)
+   ;; Ordinary OPAM installation: use the currently active switch.
+   ((let ((opam-share
+           (ignore-errors
+             (car (process-lines "opam" "var" "share")))))
+      (and opam-share
+           (file-directory-p
+            (expand-file-name "emacs/site-lisp" opam-share))))
+    (add-to-list 'load-path
+                 (expand-file-name
+                  "emacs/site-lisp"
+                  (car (process-lines "opam" "var" "share")))))))
+
+;; Optionally use OPAM's generated Emacs setup if it exists.
+(let ((opam-user-setup "~/.emacs.d/opam-user-setup.el"))
+  (when (file-exists-p opam-user-setup)
+    (require 'opam-user-setup opam-user-setup)))
+
+(autoload 'merlin-mode "merlin" nil t)
+(add-hook 'tuareg-mode-hook #'merlin-mode)
+(add-hook 'caml-mode-hook #'merlin-mode)
+
+;; Only relevant if you still use auto-complete rather than company-mode.
 (setq merlin-ac-setup 'easy)
 
 ;; -------------------------------------------------------------------
 ;; Email mode
 ;;
-;; (add-to-list 'auto-mode-alist'("\\.eml" . text-mode))
-
-;; -------------------------------------------------------------------
-;; nXML mode for XSLT and XML (default in Emacs nowadays)
-;;
-;; (add-to-list 'auto-mode-alist
-;;             '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\)\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist'("\\.eml" . text-mode))
 
 ;; -------------------------------------------------------------------
 ;; Erlang mode
@@ -361,26 +346,11 @@
 (add-hook 'erlang-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
 ;; -------------------------------------------------------------------
-;; Scala mode
-;;
-;; (add-to-list 'load-path "~/.emacs_modes/scala")
-;; (require 'scala-mode-auto)
-
-;; -------------------------------------------------------------------
 ;; Graphiz dot
 
 (org-babel-do-load-languages
  (quote org-babel-load-languages)
  (quote ((dot . t))))
-
-;; -------------------------------------------------------------------
-;; Michelson
-;;
-;; (use-package deferred :ensure t)
-;; (use-package exec-path-from-shell :ensure t)
-;; (load "~/git/tezos/emacs/michelson-mode.el" nil t)
-;; (setq michelson-client-command "tezos-client")
-;; (setq michelson-alphanet nil)
 
 ;; -------------------------------------------------------------------
 ;; JavaScript
@@ -392,26 +362,12 @@
 ;;
 (setq load-path (append (list (expand-file-name "~/site-lisp")) load-path))
 
-;;(add-to-list 'load-path "~/.emacs_modes/lilypond")
-;;(add-to-list 'auto-mode-alist '("\\.ly$" . lilypond-mode))
-;;(autoload 'lilypond-mode "lilypond-mode" "Lilypond mode." t)
-
-;; -------------------------------------------------------------------
-;; envrc
-;;
-;; (add-hook 'after-init-hook 'envrc-global-mode)
-
 ;; -------------------------------------------------------------------
 ;; Rust
 ;;
 (add-to-list 'load-path "~/.emacs_modes/rust-mode")
 (autoload 'rust-mode "rust-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-
-;; -------------------------------------------------------------------
-;; JsLIGO
-;;
-;; (add-to-list 'auto-mode-alist '("\\.jsligo$" . js-mode))
 
 ;; -------------------------------------------------------------------
 ;; YAML
@@ -430,17 +386,16 @@
 ;; -------------------------------------------------------------------
 ;; Dafny
 ;;
-(require 'flycheck)
-(require 'dafny-mode)
-(setq flycheck-dafny-executable "/home/rinderkn/tools/src/dafny/dafny")
-
-;; (add-to-list 'load-path "~/.emacs_modes/dafny/emacs")
-;; (autoload 'dafny-mode "boogie-friends" nil t)
-;; (add-to-list 'auto-mode-alist '("\\.dfy$" . dafny-mode))
+;; (require 'flycheck)
+;; (require 'dafny-mode)
+;; (setq flycheck-dafny-executable "/home/rinderkn/tools/src/dafny/dafny")
 
 ;; -------------------------------------------------------------------
 ;; Lean
 ;;
+;; C-c C-i opens Lean Goals
+;; C-c C-d refreshes the dependencies
+
 (add-to-list 'load-path "~/.emacs_modes/lean4-mode")
 
 (setq lsp-inlay-hint-enable nil)
@@ -450,5 +405,7 @@
 (require 'lsp-mode)
 (require 'lean4-mode)
 
-;; C-c C-i opens Lean Goals
-;; C-c C-d refreshes the dependencies
+;; -------------------------------------------------------------------
+;; Just to be sure colour highlighting is on.
+
+(global-font-lock-mode 1)
